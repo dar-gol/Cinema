@@ -12,9 +12,7 @@ function App() {
   return (
     <Router>
         {<Header />}
-      <nav>
         {<Navigation />}
-      </nav>
       <main>
         {<Page />}
       </main>

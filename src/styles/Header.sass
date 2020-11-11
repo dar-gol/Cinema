@@ -29,6 +29,25 @@ header
                 border: 1px solid #aaa
                 background-size: 0.75em auto, 100%
         .window-of-login
+            ul
+                padding: 0
+                margin: 0
+                list-style-type: none
+                li
+                    width: 100%
+                    padding: 1vh 5vw
+                    a
+                        text-decoration: none 
+                        background-color: transparent
+                        border: 1px solid transparent
+                        padding: 1vh 5vw
+                        font-size: large
+                        cursor: pointer
+                        transition: 0.1s
+                    a:hover
+                        border: 1px solid #aaa
+                        
+
             button
                 width: 100%
                 background-color: transparent
@@ -52,3 +71,14 @@ header
             button:hover
                 i
                     color: darkorange
+
+@media (max-width: 800px) and (orientation: portrait)
+    header
+        .window-of-options
+            flex-direction: column
+            .change-of-city 
+                margin-bottom: 3vh
+            .window-of-login 
+                margin-bottom: 3vh
+            .search 
+                margin-bottom: 3vh

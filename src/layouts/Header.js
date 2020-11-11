@@ -1,4 +1,5 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 import "../styles/Header.sass";
 
@@ -16,8 +17,13 @@ const Header = () => {
           </select>
         </div>
         <div className="window-of-login">
-          <button>Logowanie</button>
-          <button>Rejestracja</button>
+          <ul>
+            <li><NavLink to="/login">Logowanie</NavLink></li>
+            <li><NavLink to="/register">Rejestracja</NavLink></li>
+          </ul>
+
+          {/* <button>Logowanie</button>
+          <button>Rejestracja</button> */}
         </div>
         <div className="search">
           <input type="search" placeholder="Szukaj..." />
