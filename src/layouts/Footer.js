@@ -2,7 +2,11 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <p>Footer</p>
+        <footer>
+            <h3>O NAS</h3>
+            <p><a href="https://github.com/dar-gol"><em>Dariusz Golomski</em></a></p>
+            <p><a href="https://github.com/matixezor"><em>Mateusz Romański</em></a></p>
+        </footer>
     )
 }
 
