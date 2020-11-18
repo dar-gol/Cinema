@@ -1,0 +1,65 @@
+.register
+    width: 100%
+    display: flex
+    flex-direction: column
+    padding: 2vh 0
+    align-items: center
+    h2
+        letter-spacing: 3px
+    .register-form
+        display: flex
+        flex-direction: column
+        background-color: #333
+        border-radius: 20px
+        padding: 1vh 1vw
+        .input-item
+            display: flex
+            flex-direction: column
+            margin: 1vh 1vw
+            input
+                background-color: transparent
+                border: none
+                border-bottom: 1px solid #aaa
+                margin: 1vh 1vw
+            span
+                margin: 0 1vw
+        .check-item
+            display: flex
+            flex-wrap: wrap
+            max-width: 30vw
+            margin: 2vh 2vw
+            label 
+                display: block
+                width: 95%
+                margin: 0
+            input
+                margin: 0
+                width: 5%
+            input:focus
+                outline: 0
+        button
+            background-color: transparent
+            border: none
+            transition: 0.2s
+            cursor: pointer
+            margin: 2vh 2vw
+            padding: 1vh 5vw
+            font-size: large
+            cursor: pointer
+            transition: 0.1s
+            border: 1px solid transparent
+            text-transform: uppercase
+        button:hover
+            border: 1px solid #aaa
+            background-color: #222
+        label
+            margin: 1vh 1vw
+    span
+        color: firebrick
+@media (max-width: 800px) and (orientation: portrait)
+    .register
+        .register-form
+            width: 90vw
+            .check-item
+                max-width: 80vw
+        

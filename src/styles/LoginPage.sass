@@ -9,11 +9,18 @@
     .login-form
         display: flex
         flex-direction: column
-    input
-        background-color: transparent
-        border: none
-        border-bottom: 1px solid #aaa
+        background-color: #333
+        border-radius: 20px
+        padding: 1vh 1vw
+    .input-item
+        display: flex
+        flex-direction: column
         margin: 1vh 1vw
+        input
+            background-color: transparent
+            border: none
+            border-bottom: 1px solid #aaa
+            margin: 1vh 1vw
     button
         background-color: transparent
         border: none
@@ -25,7 +32,9 @@
         cursor: pointer
         transition: 0.1s
         border: 1px solid transparent
+        text-transform: uppercase
     button:hover
         border: 1px solid #aaa
+        background-color: #222
     label
         margin: 1vh 1vw

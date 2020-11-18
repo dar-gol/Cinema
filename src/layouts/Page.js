@@ -11,6 +11,7 @@ import RegisterPage from "../pages/RegisterPage";
 import "../styles/Page.sass";
 
 const Page = (props) => {
+
   return (
     <main className="page">
       <Route path="/" exact component={HomePage} />
@@ -21,7 +22,9 @@ const Page = (props) => {
       <Route path="/login" exact render={
         () => <LoginPage handleLogin={props.handleLogin} />
       } />
-      <Route path="/register" exact component={RegisterPage} />
+      <Route path="/register" exact render={
+        () => <RegisterPage handleRegister={props.handleRegister} />
+      } />
     </main>
   );
 };
