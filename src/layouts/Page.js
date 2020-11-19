@@ -9,6 +9,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 
 import "../styles/Page.sass";
+import LogoutPage from "../pages/LogoutPage";
 
 const Page = (props) => {
 
@@ -20,10 +21,13 @@ const Page = (props) => {
       <Route path="/contact" exact component={ContactPage} />
 
       <Route path="/login" exact render={
-        () => <LoginPage handleLogin={props.handleLogin} />
+        () => <LoginPage handleLogin={props.handleLogin} failedLogin={props.failedLogin} />
+      } />
+      <Route path="/logout" exact render={
+        () => <LogoutPage handleLogout={props.handleLogout} />
       } />
       <Route path="/register" exact render={
-        () => <RegisterPage handleRegister={props.handleRegister} />
+        () => <RegisterPage handleRegister={props.handleRegister} failedRegister={props.failedRegister}/>
       } />
     </main>
   );

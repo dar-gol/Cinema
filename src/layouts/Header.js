@@ -44,7 +44,7 @@ const Header = () => {
               {!isUserLogged ? <NavLink to="/login">Logowanie</NavLink> : <NavLink to="/account">Konto</NavLink>}
             </li>
             <li>
-            {!isUserLogged ? <NavLink to="/registe">Rejestracja</NavLink> : <NavLink to="/logout">Wyloguj</NavLink>}
+            {!isUserLogged ? <NavLink to="/register">Rejestracja</NavLink> : <NavLink to="/logout">Wyloguj</NavLink>}
             </li>
           </ul>
         </div>

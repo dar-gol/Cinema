@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { Redirect } from "react-router-dom";
+
+import {UserContext} from '../Context/UserContext';
 
 import "../styles/LoginPage.sass";
 
@@ -24,49 +27,40 @@ const LoginItem = [
 
 const LoginPage = (props) => {
   const { register, handleSubmit, errors } = useForm();
+  const {isUserLogged} = useContext(UserContext)
+
+  if(isUserLogged){
+    return (<Redirect to='/'/>)
+  }
 
   return (
     <div className="login">
       <h2>Zaloguj się</h2>
       <form className="login-form" onSubmit={handleSubmit(props.handleLogin)}>
+        {props.failedLogin && (
+          <div className="failed-login">
+            <p>Nieprawidłowy e-mail lub hasło.</p>
+          </div>
+        )}
         {LoginItem.map((item) => (
-          <div key={item.id} className='input-item'>
+          <div key={item.id} className="input-item">
             <label htmlFor={item.id}>{item.label}</label>
             <input
               type={item.type}
               id={item.id}
               name={item.name}
               placeholder={item.placeholder}
-              ref={item.name ? register({
-                required: `${item.required}`
-              }) : null}
+              ref={
+                item.name
+                  ? register({
+                      required: `${item.required}`,
+                    })
+                  : null
+              }
             />
-            <div>{errors[item.name] && <p>{errors[item.name].message}</p>}</div>
+            <div>{errors[item.name] && <span>{errors[item.name].message}</span>}</div>
           </div>
         ))}
-
-        {/* <label htmlFor="username">E-mail:</label>
-                <input 
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Wpisz e-mail..."
-                    ref={register({
-                        required: "E-mail jest wymagany!"
-                    })}
-                />
-                {errors.username && <span>{errors.username.message}</span>}
-                <label htmlFor="password">Hasło:</label>
-                <input 
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Wpisz hasło..."
-                    ref={register({
-                        required: "Hasło jest wymagane!"
-                    })}
-                />
-                {errors.password && <span>{errors.password.message}</span>} */}
         <button type="submit">Zaloguj</button>
       </form>
     </div>
