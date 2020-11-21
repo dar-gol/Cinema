@@ -1,8 +1,5 @@
-import React, { useState } from "react";
+import React, {useState, useEffect} from "react";
 import { useForm } from "react-hook-form";
-import { Redirect } from "react-router-dom";
-
-// import { UserContext } from "../Context/UserContext";
 
 import "../styles/RegisterPage.sass";
 
@@ -74,17 +71,13 @@ const registerItem = [
 
 const RegisterPage = (props) => {
   const { register, handleSubmit, errors } = useForm();
-  const [registerSuccess, setRegisterSuccess] = useState(false);
-
-  const handleRegisterSuccess = () => {
-    // console.log("Success");
-    // setRegisterSuccess(true);
-  };
 
   const handleError = (item) => {
+    // console.log(props.failedRegister);
     if (props.failedRegister) {
       for (const error of props.failedRegister) {
-        if(error.loc[1] === item){
+        if (!error.loc) return null;
+        if (error.loc[1] === item) {
           return error.msg;
         }
       }
@@ -100,18 +93,14 @@ const RegisterPage = (props) => {
         id={item.id}
         name={item.name}
         placeholder={item.placeholder ? item.placeholder : null}
-        ref={register({
-          required: item.required,
-        })}
+        ref={(e) => {
+          register(e, { required: item.required });
+        }}
       />
       {errors[item.name] && <span>{errors[item.name].message}</span>}
       {<span>{handleError(item.name)}</span>}
     </div>
   ));
-
-  if (registerSuccess) {
-    return <Redirect to="/" />;
-  }
 
   return (
     <div className="register">
@@ -120,10 +109,9 @@ const RegisterPage = (props) => {
         className="register-form"
         onSubmit={handleSubmit(props.handleRegister)}
       >
+        {props.messageRegister && <div className="message"><p>{props.messageRegister}</p></div>}
         {registerList}
-        <button type="submit" onClick={handleRegisterSuccess}>
-          Utwórz konto
-        </button>
+        <button type="submit">Utwórz konto</button>
       </form>
     </div>
   );

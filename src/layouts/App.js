@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router} from "react-router-dom";
+// import axios from "axios";
 
 import { UserContext } from "../Context/UserContext";
 
@@ -14,6 +14,8 @@ import "../styles/App.sass";
 function App() {
   const [failedLogin, setFailedLogin] = useState(false);
   const [failedRegister, setFailedRegister] = useState(false);
+  const [messageRegister, setMessageRegister] = useState(null);
+
   const [user, setUser] = useState({
     email: "",
     isUserLogged: sessionStorage.getItem("token") ? true : false,
@@ -50,6 +52,18 @@ function App() {
   };
 
   const handleRegister = (data, e) => {
+    setMessageRegister(null);
+    setFailedRegister(false);
+    if(data.password !== data.confirmPassword){
+      return setFailedRegister([{
+        loc: [
+          "body",
+          "confirmPassword"
+        ],
+        msg: "Potwierdzenie hasła nie jest prawidłowe!",
+        type: "input"
+      }])
+    }
     fetch("http://matixezor-cinema-api.herokuapp.com/api/register", {
       method: "POST",
       mode: "cors",
@@ -62,23 +76,28 @@ function App() {
     })
       .then((res) => {
         if (!res.ok) throw res;
-        console.log("THEN");
+        setMessageRegister("Pomyślnie zarejestrowano!");
+        e.target.reset();
         console.log(res);
+        console.log("THEN");
       })
       .catch((error) => {
-        console.log("Error occurred");
+        // console.log("Error occurred");
         try {
           error.json().then((body) => {
             // console.log(body);
             // console.log(body.detail);
-            setFailedRegister(body.detail);
+            if(typeof body.detail === 'string') {
+              setMessageRegister(body.detail)
+              e.target.reset();
+            }
+            else setFailedRegister(body.detail);
           });
         } catch (e) {
           console.log("Error parsing promise");
           console.log(error);
         }
       });
-    e.target.reset();
   };
 
   const handleLogout = () => {
@@ -101,6 +120,7 @@ function App() {
             handleLogout={handleLogout}
             failedLogin={failedLogin}
             failedRegister={failedRegister}
+            messageRegister={messageRegister}
           />
         }
         {<Footer />}
