@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import "../styles/RegisterPage.sass";
@@ -71,11 +71,13 @@ const registerItem = [
 
 const RegisterPage = (props) => {
   const { register, handleSubmit, errors } = useForm();
+  const [failedRegister, setFailedRegister] = useState(false);
+  const [messageRegister, setMessageRegister] = useState(null);
 
   const handleError = (item) => {
     // console.log(props.failedRegister);
-    if (props.failedRegister) {
-      for (const error of props.failedRegister) {
+    if (failedRegister) {
+      for (const error of failedRegister) {
         if (!error.loc) return null;
         if (error.loc[1] === item) {
           return error.msg;
@@ -83,6 +85,48 @@ const RegisterPage = (props) => {
       }
       return null;
     }
+  };
+
+  const handleRegister = (data, e) => {
+    setMessageRegister(null);
+    setFailedRegister(false);
+    if (data.password !== data.confirmPassword) {
+      return setFailedRegister([
+        {
+          loc: ["body", "confirmPassword"],
+          msg: "Potwierdzenie hasła nie jest prawidłowe!",
+          type: "input",
+        },
+      ]);
+    }
+    fetch("http://matixezor-cinema-api.herokuapp.com/api/register", {
+      method: "POST",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (!res.ok) throw res;
+        setMessageRegister("Pomyślnie zarejestrowano!");
+        e.target.reset();
+      })
+      .catch((error) => {
+        console.log("Error occurred");
+        try {
+          error.json().then((body) => {
+            if (typeof body.detail === "string") {
+              setMessageRegister(body.detail);
+              e.target.reset();
+            } else setFailedRegister(body.detail);
+          });
+        } catch (e) {
+          console.log("Error parsing promise");
+        }
+      });
   };
 
   const registerList = registerItem.map((item) => (
@@ -105,11 +149,12 @@ const RegisterPage = (props) => {
   return (
     <div className="register">
       <h2>Zarejestruj się </h2>
-      <form
-        className="register-form"
-        onSubmit={handleSubmit(props.handleRegister)}
-      >
-        {props.messageRegister && <div className="message"><p>{props.messageRegister}</p></div>}
+      <form className="register-form" onSubmit={handleSubmit(handleRegister)}>
+        {messageRegister && (
+          <div className="message">
+            <p>{messageRegister}</p>
+          </div>
+        )}
         {registerList}
         <button type="submit">Utwórz konto</button>
       </form>

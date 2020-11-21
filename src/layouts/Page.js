@@ -26,11 +26,7 @@ const Page = (props) => {
         () => <LogoutPage handleLogout={props.handleLogout} />
       } />
       <Route path="/register" exact render={
-        () => <RegisterPage 
-        handleRegister={props.handleRegister} 
-        failedRegister={props.failedRegister}
-        messageRegister={props.messageRegister}
-        />
+        () => <RegisterPage />
       } />
     </main>
   );
