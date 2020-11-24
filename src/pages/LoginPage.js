@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import {UserContext} from '../Context/UserContext';
 
-import "../styles/LoginPage.sass";
+import "../styles/Page/LoginPage.sass";
 
 const LoginItem = [
   {

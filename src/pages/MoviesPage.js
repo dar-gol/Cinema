@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 import MoviesList from "../components/MoviesList";
 
+import "../styles/Page/MoviesPage.sass";
+
 const MoviesPage = () => {
   const [movies, setMovies] = useState(null);
 
@@ -23,8 +25,15 @@ const MoviesPage = () => {
 
   return (
     <div className="movies">
-      {movies &&
-        movies.map((item) => <MoviesList key={item.movie_id} item={item} />)}
+      {movies ? (
+        movies.map((item) => <MoviesList key={item.movie_id} item={item} />)
+      ) : (
+        <div className="loading">
+          <p>
+            Ładowanie <span>. . .</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

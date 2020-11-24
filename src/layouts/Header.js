@@ -7,26 +7,8 @@ import TownList from "../components/TownList";
 
 import "../styles/Header.sass";
 
-const Header = () => {
-  const [town, setTown] = useState(null);
-
+const Header = (props) => {
   const { isUserLogged } = useContext(UserContext);
-
-  const fetchTown = async () => {
-    try {
-      const response = await fetch(
-        "http://matixezor-cinema-api.herokuapp.com/api/cinemas/?limit=100"
-      );
-      const data = await response.json();
-      setTown(data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  useEffect(() => {
-    fetchTown();
-  }, []);
 
   return (
     <header>
@@ -34,8 +16,8 @@ const Header = () => {
       <div className="window-of-options">
         <div className="change-of-city">
           <label htmlFor="city">Wybierz miasto:</label>
-          <select name="" id="city">
-            <TownList town={town} />
+          <select name="" id="city" onChange={props.handleSelectTown} value={props.selectTown}>
+            <TownList town={props.towns} />
           </select>
         </div>
         <div className="window-of-login">
