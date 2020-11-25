@@ -13,17 +13,11 @@ import "../styles/App.sass";
 
 function App() {
   const [failedLogin, setFailedLogin] = useState(false);
-  const [towns, setTowns] = useState(null);
-  const [selectTown, setSelectTown] = useState({cinema_id: 1, city: "Poznań"});
 
   const [user, setUser] = useState({
     email: "",
     isUserLogged: sessionStorage.getItem("token") ? true : false,
   });
-
-  useEffect(() => {
-    fetchTown();
-  }, []);
 
   const handleLogin = (data, e) => {
     fetch("https://matixezor-cinema-api.herokuapp.com/api/token", {
@@ -63,47 +57,16 @@ function App() {
     });
   };
 
-  const fetchTown = async () => {
-    try {
-      const response = await fetch(
-        "http://matixezor-cinema-api.herokuapp.com/api/cinemas/?limit=100"
-      );
-      const data = await response.json();
-      setTowns(data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleSelectTown = (e) => {
-    let index;
-    if(towns !== null){
-      towns.forEach(item => {
-        if(item.city === e.target.value){
-          index = item.cinema_id;
-          return;
-        }
-      });
-    }
-    setSelectTown({cinema_id: index, city: e.target.value});
-  }
-
-
   return (
     <UserContext.Provider value={user}>
       <Router>
-        {<Header 
-          handleSelectTown={handleSelectTown}
-          selectTown={selectTown.city}
-          towns={towns}
-        />}
+        {<Header />}
         {<Navigation />}
         {
           <Page
             handleLogin={handleLogin}
             handleLogout={handleLogout}
             failedLogin={failedLogin}
-            selectTown={selectTown.cinema_id}
           />
         }
         {<Footer />}

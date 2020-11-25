@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import "../styles/Page/RegisterPage.sass";
+import '../styles/Form.sass';
 
 const registerItem = [
   {
@@ -147,9 +148,9 @@ const RegisterPage = (props) => {
   ));
 
   return ( 
-    <div className="register">
-      <h2>Zarejestruj się </h2>
-      <form className="register-form" onSubmit={handleSubmit(handleRegister)}>
+    <div className="wrapper-form">
+      <h2>ZARAJESTRUJ SIĘ </h2>
+      <form className="form" onSubmit={handleSubmit(handleRegister)}>
         {messageRegister && (
           <div className="message">
             <p>{messageRegister}</p>

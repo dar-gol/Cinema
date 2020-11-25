@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import {UserContext} from '../Context/UserContext';
 
 import "../styles/Page/LoginPage.sass";
+import '../styles/Form.sass';
 
 const LoginItem = [
   {
@@ -34,11 +35,11 @@ const LoginPage = (props) => {
   }
 
   return (
-    <div className="login">
-      <h2>Zaloguj się</h2>
-      <form className="login-form" onSubmit={handleSubmit(props.handleLogin)}>
+    <div className="wrapper-form">
+      <h2>ZALOGUJ SIĘ</h2>
+      <form className="form" onSubmit={handleSubmit(props.handleLogin)}>
         {props.failedLogin && (
-          <div className="failed-login">
+          <div className="message">
             <p>Nieprawidłowy e-mail lub hasło.</p>
           </div>
         )}

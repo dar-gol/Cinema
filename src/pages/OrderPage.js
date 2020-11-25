@@ -1,47 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import "../styles/Page/OrderPage.sass";
 
 const OrderPage = (props) => {
   const { repertory } = props;
+
+  console.log(repertory)
+
+  const [startTime, setStartTime] = useState(
+    repertory[0].schedule[0].start_time
+  );
+
   const params = useParams();
 
-  const oneMovie =
-    repertory && repertory.find((item) => item.movie.movie_id == params.id);
+  const oneMovie = repertory.find((item) => item.movie.movie_id == params.id);
   const { movie, schedule } = oneMovie;
 
-  console.log(movie, schedule);
+  const genresList = movie.genres.map(
+    (item, index) => ` ${item}${index === movie.genres.length - 1 ? "" : ","}`
+  );
 
-  const genresList =
-    movie &&
-    movie.genres.map(
-      (item, index) => ` ${item}${index === movie.genres.length - 1 ? "" : ","}`
-    );
+  const handleStartTime = (e) => {
+    setStartTime(e.target.value);
+  };
 
   return (
     <div className="order">
-      {movie && (
-        <div className="ordering-movie">
-          {movie.img ? <img src={movie.img} alt={movie.title} className='big-image'/> : <div className='big-image'></div>}
-          <div className="basic-info">
-            <h2>{movie.title}</h2>
-            <p>Premiera: {movie.premiere}</p>
-            <p>Reżyser: {movie.director}</p>
-            <p>Gatunek: {genresList}</p>
-          </div>
+      <div className="ordering-movie">
+        {movie.img ? (
+          <img src={movie.img} alt={movie.title} className="big-image" />
+        ) : (
+          <div className="big-image"></div>
+        )}
+        <div className="basic-info">
+          <h2>{movie.title}</h2>
+          <p>Premiera: {movie.premiere}</p>
+          <p>Reżyser: {movie.director}</p>
+          <p>Gatunek: {genresList}</p>
         </div>
-      )}
-      {schedule && <div className="ordering-panel">
-            <h2>Kup bilet</h2>
-            <label htmlFor="hour">Wybierz godzinę:</label>
-            <select name="" id="hour">
-            {schedule.map((item) => (
-                <option key={item.start_time}>{item.start_time}</option>
-                ))}
-            </select>
-            <div className="button-hour">Wybierz</div>
-      </div>}
+      </div>
+      <div className="ordering-panel">
+        <h2>Kup bilet</h2>
+        <label htmlFor="hour">Wybierz godzinę:</label>
+        <select name="" id="hour" onChange={handleStartTime} value={startTime}>
+          {schedule.map((item) => (
+            <option key={item.start_time}>{item.start_time}</option>
+          ))}
+        </select>
+        <Link to={`hall/${startTime}`}>
+          <div className="button-hour">Wybierz</div>
+        </Link>
+      </div>
     </div>
   );
 };
