@@ -38,6 +38,7 @@ function App() {
         sessionStorage.setItem("token", res.access_token);
         setUser({
           email: data.email,
+          access_token: res.access_token,
           isUserLogged: true,
         });
         setFailedLogin(false);

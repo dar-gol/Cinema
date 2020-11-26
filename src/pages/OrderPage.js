@@ -6,8 +6,6 @@ import "../styles/Page/OrderPage.sass";
 const OrderPage = (props) => {
   const { repertory } = props;
 
-  console.log(repertory)
-
   const [startTime, setStartTime] = useState(
     repertory[0].schedule[0].start_time
   );

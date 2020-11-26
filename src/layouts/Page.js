@@ -4,12 +4,14 @@ import { Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import RepertoryPage from "../pages/RepertoryPage";
 import OrderPage from "../pages/OrderPage";
+import PlaceSelect from "../pages/PlaceSelect";
 import MoviesPage from "../pages/MoviesPage";
 import MoviesInfoPage from "../pages/MoviesInfoPage";
 import ContactPage from "../pages/ContactPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import LogoutPage from "../pages/LogoutPage";
+import AboutMePage from '../pages/AboutMePage'
 
 import "../styles/Page/Page.sass";
 
@@ -88,6 +90,8 @@ const Page = (props) => {
         />
       )}
 
+      <Route path={`/order/cinema/:cinema_id/movie/:id/hall/:start_time`} exact component={PlaceSelect} />
+
       <Route path="/movies" exact component={MoviesPage} />
       <Route path="/movies/:id" exact component={MoviesInfoPage} />
 
@@ -119,6 +123,8 @@ const Page = (props) => {
         render={() => <LogoutPage handleLogout={props.handleLogout} />}
       />
       <Route path="/register" exact component={RegisterPage} />
+
+      <Route path='/account' exact component={AboutMePage} />
     </main>
   );
 };

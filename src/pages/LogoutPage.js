@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import '../styles/Form.sass'
+
 const LogoutPage = (props) => {
   
     useEffect(() => {
@@ -7,9 +9,11 @@ const LogoutPage = (props) => {
     }, [])
 
   return (
-    <>
-      <div><p>Wylogowano pomyślnie!</p></div>
-    </>
+      <div className='wrapper-form'>
+        <div className='form'>
+            <p>Wylogowano pomyślnie!</p>
+        </div>
+      </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 const defaultObject = {
-  name: "",
+  access_token: "",
   email: "",
   isUserLogged: false,
 };
