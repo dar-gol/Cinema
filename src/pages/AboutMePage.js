@@ -1,30 +1,27 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from 'react';
 
-import { UserContext } from "../Context/UserContext";
+import UserContext from '../Context/UserContext';
 
-import "../styles/Form.sass";
+import '../styles/Form.sass';
+import '../styles/Page/AboutMePage.sass';
 
-const AboutMePage = (props) => {
+const AboutMePage = () => {
   const { access_token } = useContext(UserContext);
   const [dataAccount, setDataAccount] = useState(null);
-
-  useEffect(() => {
-    fetchMe();
-  }, []);
 
   const fetchMe = async () => {
     try {
       const response = await fetch(
-        "http://matixezor-cinema-api.herokuapp.com/api/me/",
+        'http://matixezor-cinema-api.herokuapp.com/api/me/',
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + access_token,
-            Host: "api.producthunt.com",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${access_token}`,
+            Host: 'api.producthunt.com',
           },
-        }
+        },
       );
       const data = await response.json();
       setDataAccount(data);
@@ -34,15 +31,25 @@ const AboutMePage = (props) => {
     }
   };
 
+  useEffect(() => {
+    fetchMe();
+  }, []);
+
   return (
     <div className="wrapper-form">
-      {dataAccount && 
-      <div className="form">
-        <h3>{dataAccount.name} {dataAccount.surname}</h3>
-        <p>E-mail: {dataAccount.email}</p>
-        <p>Telefon: {dataAccount.phone}</p>
-      </div>
-      }
+      {dataAccount && (
+        <div className="form">
+          <h3>
+            {dataAccount.name} {dataAccount.surname}
+          </h3>
+          <p>
+            <i className="fas fa-at" /> {dataAccount.email}
+          </p>
+          <p>
+            <i className="fas fa-phone" /> {dataAccount.phone}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

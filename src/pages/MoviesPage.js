@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
-import MoviesList from "../components/MoviesList";
+import MoviesList from '../components/MoviesList';
 
-import "../styles/Page/MoviesPage.sass";
+import '../styles/Page/MoviesPage.sass';
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState(null);
@@ -12,7 +12,7 @@ const MoviesPage = () => {
   const fetchMovies = async () => {
     try {
       const response = await fetch(
-        "http://matixezor-cinema-api.herokuapp.com/api/movies/"
+        'http://matixezor-cinema-api.herokuapp.com/api/movies/',
       );
       const data = await response.json();
       setMovies(data);
@@ -27,11 +27,35 @@ const MoviesPage = () => {
 
   const handleSearchButton = () => {
     console.log(inputSearch.current.value);
-    let item = movies.filter((item) => item.title.toUpperCase().includes(inputSearch.current.value.toUpperCase()));
-    item = item ? item : false;
+    let item = movies.filter((element) =>
+      element.title
+        .toUpperCase()
+        .includes(inputSearch.current.value.toUpperCase()),
+    );
+    item = item || false;
     setSearch(item);
     console.log(item);
-    inputSearch.current.value = "";
+    inputSearch.current.value = '';
+  };
+
+  const MoviesDiv = () => {
+    if (search) {
+      return search.map((item) => (
+        <MoviesList key={item.movie_id} item={item} />
+      ));
+    }
+    if (movies) {
+      return movies.map((item) => (
+        <MoviesList key={item.movie_id} item={item} />
+      ));
+    }
+    return (
+      <div className="loading">
+        <p>
+          Ładowanie <span>. . .</span>
+        </p>
+      </div>
+    );
   };
 
   return (
@@ -39,24 +63,12 @@ const MoviesPage = () => {
       <div className="option">
         <div className="search">
           <input type="search" placeholder="Szukaj..." ref={inputSearch} />
-          <button onClick={handleSearchButton}>
-            <i className="fas fa-search"></i>
+          <button type="button" onClick={handleSearchButton}>
+            <i className="fas fa-search" />
           </button>
         </div>
       </div>
-      {movies ? (
-        search ? (
-          search.map((item) => <MoviesList key={item.movie_id} item={item} />)
-        ) : (
-          movies.map((item) => <MoviesList key={item.movie_id} item={item} />)
-        )
-      ) : (
-        <div className="loading">
-          <p>
-            Ładowanie <span>. . .</span>
-          </p>
-        </div>
-      )}
+      {MoviesDiv()}
     </div>
   );
 };

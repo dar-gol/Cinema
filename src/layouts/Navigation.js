@@ -1,13 +1,13 @@
-import {useRef, useState, useEffect, useCallback} from "react";
-import { NavLink } from "react-router-dom";
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import "../styles/Navigation.sass";
+import '../styles/Navigation.sass';
 
 const menuList = [
-  { name: "Start", path: "/", exact: true },
-  { name: "Repertuar", path: "/repertory" },
-  { name: "Filmy", path: "/movies" },
-  { name: "Kontakt", path: "/contact" },
+  { name: 'Start', path: '/', exact: true },
+  { name: 'Repertuar', path: '/repertory' },
+  { name: 'Filmy', path: '/movies' },
+  { name: 'Kontakt', path: '/contact' },
 ];
 
 const Navigation = () => {
@@ -24,30 +24,30 @@ const Navigation = () => {
   ));
 
   const handleScroll = useCallback(() => {
-    if (nav.current.className === "menu") {
+    if (nav.current.className === 'menu') {
       setOffsetTop(nav.current.offsetTop);
     }
     if (offsetTop <= window.scrollY) {
-      nav.current.className = "menu fixed-menu";
+      nav.current.className = 'menu fixed-menu';
     } else {
-      nav.current.className = "menu";
+      nav.current.className = 'menu';
     }
-  },[offsetTop]);
+  }, [offsetTop]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [handleScroll]);
 
   useEffect(() => {
-    fetch("http://matixezor-cinema-api.herokuapp.com/api/movies/?limit=100")
-      .then(res => res.json())
-      .then(data => data);
+    fetch('http://matixezor-cinema-api.herokuapp.com/api/movies/?limit=100')
+      .then((res) => res.json())
+      .then((data) => data);
   }, []);
-  
+
   return (
     <nav className="menu" ref={nav}>
       <ul>{menu}</ul>

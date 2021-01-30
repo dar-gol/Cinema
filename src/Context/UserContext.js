@@ -1,9 +1,11 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 const defaultObject = {
-  access_token: "",
-  email: "",
+  access_token: '',
+  email: '',
   isUserLogged: false,
 };
 
-export const UserContext = createContext(defaultObject);
+const UserContext = createContext(defaultObject);
+
+export default UserContext;

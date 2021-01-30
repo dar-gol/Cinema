@@ -1,18 +1,20 @@
-import React, { useState, useRef, useContext } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import { UserContext } from "../Context/UserContext";
+import UserContext from '../Context/UserContext';
 
-const PlaceSelect = (props) => {
+const PlaceSelect = () => {
   const { isUserLogged } = useContext(UserContext);
 
-  if(!isUserLogged){
-      return <Redirect to={`/login`}/>
+  if (!isUserLogged) {
+    return <Redirect to="/login" />;
   }
 
-  return <div>
+  return (
+    <div>
       <p>Proszę wybrać miejsce :)</p>
-  </div>;
+    </div>
+  );
 };
 
 export default PlaceSelect;

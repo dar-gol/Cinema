@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const RepertoryList = (props) => {
-  const { cinema_id, movie } = props.item;
+const RepertoryList = ({ item }) => {
+  const { cinema_id, movie } = item;
 
   return (
     <Link
@@ -11,13 +11,9 @@ const RepertoryList = (props) => {
     >
       <div className="movie">
         {movie.min_img ? (
-          <img
-            src={movie.min_img}
-            className="image"
-            alt={movie.title}
-          />
+          <img src={movie.min_img} className="image" alt={movie.title} />
         ) : (
-          <div className="image"></div>
+          <div className="image" />
         )}
         <div>
           <h2>Tytuł: {movie.title}</h2>

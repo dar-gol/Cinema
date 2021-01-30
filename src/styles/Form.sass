@@ -27,8 +27,8 @@
             input
                 background-color: transparent
                 border: none
+                flex-grow: 1
                 border-bottom: 1px solid #aaa
-                margin: 1vh 1vw
             span
                 margin: 0 1vw
         button
@@ -47,8 +47,11 @@
             border: 1px solid #aaa
             background-color: #222
         label
-            margin: 1vh 1vw
-    span
+            display: flex
+            margin: 2vh 1vw
+            .label
+                min-width: 10rem
+    span.error
         color: firebrick
 
 @media (max-width: 800px) and (orientation: portrait)
