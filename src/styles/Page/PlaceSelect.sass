@@ -1,0 +1,32 @@
+.places
+    margin: 5vh auto
+    width: 800px
+    display: flex
+    flex-wrap: wrap
+    padding: 70px 25px
+    border-top: 5px solid black
+    .seat
+        border: 1px solid white
+        position: relative
+        color: white
+        flex: 0 0 40px
+        padding: auto
+        margin: 5px
+        height: 40px
+        background-color: black
+        transition: 0.5s
+        cursor: pointer
+        span
+            position: absolute
+            top: 50%
+            left: 50%
+            margin-right: -50%
+            transform: translate(-50%, -50%)
+    .selected
+        border: 1px solid gold
+        color: gold
+    .busy
+        border: 1px solid red
+        color: red
+    .seat:hover
+        background: radial-gradient(circle, rgba(0,0,0,1) 5%, rgba(17,17,17,1) 10%, rgba(34,34,34,1) 100%)

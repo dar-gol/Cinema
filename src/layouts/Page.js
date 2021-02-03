@@ -84,16 +84,16 @@ const Page = (props) => {
 
       {repertory && (
         <Route
-          path="/order/cinema/:cinema_id/movie/:id/"
+          path="/order/cinema/:cinemaId/movie/:id/"
           exact
           render={() => <OrderPage repertory={repertory} />}
         />
       )}
 
       <Route
-        path="/order/cinema/:cinema_id/movie/:id/hall/:start_time"
+        path="/order/cinema/:cinemaId/movie/:id/hall/:hallId/repertory/:repertoryId"
         exact
-        component={PlaceSelect}
+        render={() => <PlaceSelect />}
       />
 
       <Route path="/movies" exact component={MoviesPage} />

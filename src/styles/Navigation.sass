@@ -1,47 +1,44 @@
-.menu 
-  min-height: 40px
-  height: 5vh
-  display: flex
-  justify-content: center
-  background-color: darkorange
-  ul
-    width: 100%
-    margin: 0
-    padding: 0
+.menu
+    min-height: 40px
+    height: 5vh
     display: flex
-    list-style-type: none
     justify-content: center
-    align-items: center
-    li
-        height: 80%
-        border-left: 1px solid white
-        a
-            display: flex
-            align-items: center
-            height: 100%
-            padding: 0 1vw
-            text-decoration: none
-            color: whitesmoke
-            transition: 0.3s
-        a:hover
-            color: black
-        a.active
-            color: black
-    li:last-child
-        border-right: 1px solid white
+    background-color: darkorange
+    z-index: 10
+    ul
+        width: 100%
+        margin: 0
+        padding: 0
+        display: flex
+        list-style-type: none
+        justify-content: center
+        align-items: center
+        li
+            height: 80%
+            border-left: 1px solid white
+            a
+                display: flex
+                align-items: center
+                height: 100%
+                padding: 0 1vw
+                text-decoration: none
+                color: whitesmoke
+                transition: 0.3s
+            a:hover
+                color: black
+            a.active
+                color: black
+        li:last-child
+            border-right: 1px solid white
 
-nav.menu.fixed-menu 
-  left: 0
-  top: 0
-  position: fixed
-  width: 100%
-  /* left: 50%
-    transform: translate(-50%, 0)
-    width: 95vw */
+nav.menu.fixed-menu
+    left: 0
+    top: 0
+    position: fixed
+    width: 100%
 
 @media (max-width: 800px) and (orientation: portrait)
     .menu
         ul
             li
                 flex-grow: 1
-

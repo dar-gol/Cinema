@@ -16,6 +16,7 @@ function App() {
 
   const [user, setUser] = useState({
     email: '',
+    access_token: '',
     isUserLogged: !!sessionStorage.getItem('token'),
   });
 
@@ -55,6 +56,7 @@ function App() {
     sessionStorage.clear();
     setUser({
       email: '',
+      access_token: '',
       isUserLogged: false,
     });
   };

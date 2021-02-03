@@ -6,27 +6,23 @@ import '../styles/Page/OrderPage.sass';
 const OrderPage = (props) => {
   const { repertory } = props;
 
-  const [startTime, setStartTime] = useState(
-    repertory[0].schedule[0].start_time,
-  );
+  const [startTime, setStartTime] = useState(repertory[0].schedule[0]);
 
   const params = useParams();
-
-  console.log(repertory);
 
   const oneMovie =
     repertory &&
     repertory.find((item) => item.movie.movie_id === parseInt(params.id, 10));
   const { movie, schedule } = oneMovie;
 
-  console.log(oneMovie);
-
   const genresList = movie.genres.map(
     (item, index) => ` ${item}${index === movie.genres.length - 1 ? '' : ','}`,
   );
 
   const handleStartTime = (e) => {
-    setStartTime(e.target.value);
+    setStartTime(schedule.find((item) => item.start_time === e.target.value));
+    console.log('handleStartTime');
+    console.log(startTime);
   };
 
   return (
@@ -53,14 +49,16 @@ const OrderPage = (props) => {
               name="hour"
               id="hour"
               onChange={handleStartTime}
-              value={startTime}
+              value={startTime.start_time}
             >
               {schedule.map((item) => (
                 <option key={item.start_time}>{item.start_time}</option>
               ))}
             </select>
           </label>
-          <Link to={`hall/${startTime}`}>
+          <Link
+            to={`hall/${startTime.hall_id}/repertory/${startTime.repertoire_id}`}
+          >
             <div className="button-hour">Wybierz</div>
           </Link>
         </div>

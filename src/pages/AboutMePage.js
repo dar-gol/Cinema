@@ -10,6 +10,7 @@ const AboutMePage = () => {
   const [dataAccount, setDataAccount] = useState(null);
 
   const fetchMe = async () => {
+    console.log(`Token: ${access_token}`);
     try {
       const response = await fetch(
         'http://matixezor-cinema-api.herokuapp.com/api/me/',
