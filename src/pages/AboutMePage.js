@@ -10,7 +10,6 @@ const AboutMePage = () => {
   const [dataAccount, setDataAccount] = useState(null);
 
   const fetchMe = async () => {
-    console.log(`Token: ${access_token}`);
     try {
       const response = await fetch(
         'http://matixezor-cinema-api.herokuapp.com/api/me/',
@@ -18,7 +17,7 @@ const AboutMePage = () => {
           method: 'GET',
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             Authorization: `Bearer ${access_token}`,
             Host: 'api.producthunt.com',
           },

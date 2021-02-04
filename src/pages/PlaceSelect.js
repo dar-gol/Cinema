@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 
 import UserContext from '../Context/UserContext';
 
 import '../styles/Page/PlaceSelect.sass';
 
 const PlaceSelect = () => {
-  const { handleSubmit } = useForm();
-
-  const { isUserLogged } = useContext(UserContext);
-  // const [places, setPlaces] = useState(null);
+  const { isUserLogged, access_token } = useContext(UserContext);
+  const [places, setPlaces] = useState(null);
   const [tickets, setTickets] = useState(null);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
-  const [divPlaces, setDivPlaces] = useState(null);
+  const [bought, setBought] = useState('no');
   const [busyPlace, setBusyPlace] = useState([]);
+  const [cost, setCost] = useState({ name: 'normal', value: 0 });
 
   const params = useParams();
 
@@ -22,15 +20,22 @@ const PlaceSelect = () => {
   // console.log(places);
 
   const handlePlace = (i, e) => {
-    // console.log(busyPlace);
+    console.log(cost);
     if (busyPlace && busyPlace.includes(i)) {
       console.log('Zawiera sie w busyPlace');
     } else if (e.target.classList.contains('selected')) {
       e.target.classList.remove('selected');
-      setSelectedPlaces((prev) => prev.filter((item) => item !== i));
+      setSelectedPlaces((prev) => prev.filter((item) => item.number !== i));
     } else {
       e.target.classList.add('selected');
-      setSelectedPlaces((prev) => [...prev, i]);
+      setSelectedPlaces((prev) => [
+        ...prev,
+        { number: i, cost: Number(cost.value) },
+      ]);
+    }
+    if (selectedPlaces.length === 0) {
+      setBought('no');
+      console.log('set bought on no');
     }
   };
 
@@ -53,14 +58,15 @@ const PlaceSelect = () => {
           </button>,
         );
       }
-      setDivPlaces(items);
+      return items;
     }
+    return null;
   };
 
   const fetchBusy = async () => {
     try {
       const response = await fetch(
-        `http://matixezor-cinema-api.herokuapp.com/api/repertoire/${params.repertoryId}/seats/2020-12-04`,
+        `http://matixezor-cinema-api.herokuapp.com/api/repertoire/${params.repertoryId}/seats/${params.selectedDate}`,
       );
       const data = await response.json();
       // console.log(data);
@@ -77,6 +83,7 @@ const PlaceSelect = () => {
       );
       const data = await response.json();
       console.log(data);
+      setCost((prev) => ({ name: prev.name, value: data[0].price }));
       setTickets(data);
     } catch (e) {
       console.error(e);
@@ -90,7 +97,7 @@ const PlaceSelect = () => {
       );
       const data = await response.json();
       // console.log(data);
-      // setPlaces(data);
+      setPlaces(data);
       handlePush(data);
     } catch (e) {
       console.error(e);
@@ -98,9 +105,53 @@ const PlaceSelect = () => {
   };
 
   const handleReservations = () => {
-    console.log('Kupuję i płacę :)');
-    console.log(tickets);
-    console.log(selectedPlaces);
+    if (selectedPlaces.length !== 0) {
+      console.log('Kupuję i płacę :)');
+      console.log(tickets);
+      console.log(selectedPlaces);
+
+      fetch('http://matixezor-cinema-api.herokuapp.com/api/reservations/', {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'same-origin',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+          Authorization: `Bearer ${access_token}`,
+          Host: 'api.producthunt.com',
+        },
+        body: JSON.stringify({
+          reservation: {
+            repertoire_id: params.repertoryId,
+            price: selectedPlaces.reduce((prevValue, currentValue) => {
+              console.log(prevValue, currentValue);
+              return prevValue + currentValue.cost;
+            }, 0),
+            day: params.selectedDate,
+          },
+          tickets: selectedPlaces.map((item) => ({
+            ticket_id: 1,
+            seat: item.number,
+          })),
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          setBought('yes');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.error('Nie wybrano żadnego miejsca');
+      setBought('Nie wybrano żadnego miejsca!');
+    }
+  };
+
+  const changeRadioTickets = (e) => {
+    const { id, value } = e.target;
+    setCost({ name: id, value });
   };
 
   useEffect(() => {
@@ -112,24 +163,55 @@ const PlaceSelect = () => {
   if (!isUserLogged) {
     return <Redirect to="/login" />;
   }
+  if (bought === 'yes') {
+    return <Redirect to="/account" />;
+  }
 
   return (
     tickets && (
       <>
-        <div className="places">{divPlaces}</div>
+        <div className="places">{handlePush(places)}</div>
         <div className="wrapper-form">
           <h2>WYBIERZ MIEJSCA I OPCJĘ</h2>
-          <form className="form" onSubmit={handleSubmit(handleReservations)}>
+          <div className="form">
             {tickets.map((item) => (
               <div key={item.ticket_id} className="radio-item">
-                <label htmlFor>
-                  <input type="radio" value="item.value" name="kindOfTicket" />{' '}
-                  {item.name}
+                <label htmlFor={item.name}>
+                  <input
+                    id={item.name}
+                    type="radio"
+                    value={item.price}
+                    name="kindOfTicket"
+                    onChange={changeRadioTickets}
+                    checked={cost.name === item.name}
+                  />{' '}
+                  {item.name}({item.price} zł)
                 </label>
               </div>
             ))}
-            <button type="submit">Kupuję z obowiązkiem zapłaty</button>
-          </form>
+            Wybrane miejsca:
+            <ul>
+              {selectedPlaces.map((item) => (
+                <li key={item.number}>
+                  Miejsce nr: {item.number} (Koszt: {item.cost} zł)
+                </li>
+              ))}
+            </ul>
+            {selectedPlaces.length !== 0 ? (
+              <p>
+                Łączny koszt:{' '}
+                {selectedPlaces.reduce((prevValue, currentValue) => {
+                  console.log(prevValue, currentValue);
+                  return prevValue + currentValue.cost;
+                }, 0)}{' '}
+                zł
+              </p>
+            ) : null}
+            {bought !== 'yes' && bought !== 'no' && <p>{bought}</p>}
+            <button type="submit" onClick={handleReservations}>
+              Kupuję z obowiązkiem zapłaty
+            </button>
+          </div>
         </div>
       </>
     )

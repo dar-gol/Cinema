@@ -91,7 +91,7 @@ const Page = (props) => {
       )}
 
       <Route
-        path="/order/cinema/:cinemaId/movie/:id/hall/:hallId/repertory/:repertoryId"
+        path="/order/cinema/:cinemaId/movie/:id/date/:selectedDate/hall/:hallId/repertory/:repertoryId"
         exact
         render={() => <PlaceSelect />}
       />

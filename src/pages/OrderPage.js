@@ -6,7 +6,17 @@ import '../styles/Page/OrderPage.sass';
 const OrderPage = (props) => {
   const { repertory } = props;
 
+  const TodayDate = new Date();
+  const formattedDate = `${TodayDate.getFullYear()}-${
+    TodayDate.getMonth() < 10
+      ? `0${TodayDate.getMonth()}`
+      : TodayDate.getMonth()
+  }-${
+    TodayDate.getDate() < 10 ? `0${TodayDate.getDate()}` : TodayDate.getDate()
+  }`;
+
   const [startTime, setStartTime] = useState(repertory[0].schedule[0]);
+  const [selectedDate, setSelectedDate] = useState(formattedDate);
 
   const params = useParams();
 
@@ -23,6 +33,10 @@ const OrderPage = (props) => {
     setStartTime(schedule.find((item) => item.start_time === e.target.value));
     console.log('handleStartTime');
     console.log(startTime);
+  };
+
+  const handleDate = (e) => {
+    setSelectedDate(e.target.value);
   };
 
   return (
@@ -43,11 +57,24 @@ const OrderPage = (props) => {
         </div>
         <div className="ordering-panel">
           <h2>Kup bilet</h2>
+          <label htmlFor="date">
+            Wybierz datę:
+            <input
+              type="date"
+              id="date"
+              className="chossen-date"
+              value={selectedDate}
+              onChange={handleDate}
+              min={formattedDate}
+            />
+          </label>
+          <br />
           <label htmlFor="hour">
             Wybierz godzinę:
             <select
               name="hour"
               id="hour"
+              className="chossen-date"
               onChange={handleStartTime}
               value={startTime.start_time}
             >
@@ -57,7 +84,7 @@ const OrderPage = (props) => {
             </select>
           </label>
           <Link
-            to={`hall/${startTime.hall_id}/repertory/${startTime.repertoire_id}`}
+            to={`date/${selectedDate}/hall/${startTime.hall_id}/repertory/${startTime.repertoire_id}`}
           >
             <div className="button-hour">Wybierz</div>
           </Link>
