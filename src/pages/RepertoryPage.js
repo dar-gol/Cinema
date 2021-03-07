@@ -9,10 +9,7 @@ const RepertoryPage = ({ handleSelectTown, repertory, selectTown, towns }) => {
   const [search, setSearch] = useState(false);
   const inputSearch = useRef();
 
-  console.log(repertory);
-
   const handleSearchButton = () => {
-    console.log(inputSearch.current.value);
     let item = repertory.filter((element) =>
       element.movie.title
         .toUpperCase()
@@ -20,7 +17,6 @@ const RepertoryPage = ({ handleSelectTown, repertory, selectTown, towns }) => {
     );
     item = item || false;
     setSearch(item);
-    console.log(item);
     inputSearch.current.value = '';
   };
 
@@ -32,7 +28,7 @@ const RepertoryPage = ({ handleSelectTown, repertory, selectTown, towns }) => {
     }
     if (repertory) {
       return repertory.map((item) => (
-        <RepertoryList key={item.movie_id} item={item} />
+        <RepertoryList key={item.movie.movie_id} item={item} />
       ));
     }
     return (

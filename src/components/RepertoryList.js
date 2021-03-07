@@ -5,10 +5,7 @@ const RepertoryList = ({ item }) => {
   const { cinema_id, movie } = item;
 
   return (
-    <Link
-      to={`/order/cinema/${cinema_id}/movie/${movie.movie_id}/`}
-      key={movie.movie_id}
-    >
+    <Link to={`/order/cinema/${cinema_id}/movie/${movie.movie_id}/`}>
       <div className="movie">
         {movie.min_img ? (
           <img src={movie.min_img} className="image" alt={movie.title} />

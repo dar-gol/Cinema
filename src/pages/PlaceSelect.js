@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 
 import UserContext from '../Context/UserContext';
 
 import '../styles/Page/PlaceSelect.sass';
+import '../styles/Form.sass';
 
 const PlaceSelect = () => {
   const { isUserLogged, access_token } = useContext(UserContext);
@@ -13,6 +14,7 @@ const PlaceSelect = () => {
   const [bought, setBought] = useState('no');
   const [busyPlace, setBusyPlace] = useState([]);
   const [cost, setCost] = useState({ ticketId: 1, name: 'normal', value: 0 });
+  const isMounted = useRef(false);
 
   const params = useParams();
 
@@ -72,7 +74,7 @@ const PlaceSelect = () => {
       );
       const data = await response.json();
       // console.log(data);
-      setBusyPlace(data);
+      if (isMounted.current) setBusyPlace(data);
     } catch (e) {
       console.error(e);
     }
@@ -90,7 +92,7 @@ const PlaceSelect = () => {
         value: data[0].price,
         ticketId: data[0].ticket_id,
       }));
-      setTickets(data);
+      if (isMounted.current) setTickets(data);
     } catch (e) {
       console.error(e);
     }
@@ -103,8 +105,10 @@ const PlaceSelect = () => {
       );
       const data = await response.json();
       // console.log(data);
-      setPlaces(data);
-      handlePush(data);
+      if (isMounted.current) {
+        setPlaces(data);
+        handlePush(data);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -163,9 +167,15 @@ const PlaceSelect = () => {
   };
 
   useEffect(() => {
+    isMounted.current = true;
+
     fetchBusy();
     fetchTickets();
     fetchHall();
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [busyPlace[0]]);
 
   if (!isUserLogged) {
@@ -180,7 +190,7 @@ const PlaceSelect = () => {
       <>
         <div className="places">{handlePush(places)}</div>
         <div className="wrapper-form">
-          <h2>WYBIERZ MIEJSCA I OPCJĘ</h2>
+          <h2 className="title">WYBIERZ MIEJSCA I OPCJĘ</h2>
           <div className="form">
             {tickets.map((item) => (
               <div key={item.ticket_id} className="radio-item">

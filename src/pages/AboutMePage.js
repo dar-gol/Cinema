@@ -11,7 +11,7 @@ import '../styles/Page/AboutMePage.sass';
 const AboutMePage = () => {
   const { access_token } = useContext(UserContext);
   const [dataAccount, setDataAccount] = useState(null);
-  const [dataTickets, setDataTickets] = useState(null);
+  const [dataTickets, setDataTickets] = useState([]);
 
   const fetchMe = async () => {
     try {
@@ -78,28 +78,31 @@ const AboutMePage = () => {
                 </p>
               </div>
             </div>
-            <h3>Aktualne bilety:</h3>
-            <div className="form form-horizontal">
-              {dataTickets &&
-                dataTickets.map((item) => {
-                  const {
-                    reservation_id,
-                    repertoire,
-                    day,
-                    tickets,
-                    price,
-                  } = item;
-                  return (
-                    <Ticket
-                      key={reservation_id}
-                      repertoire={repertoire}
-                      day={day}
-                      tickets={tickets}
-                      totalPrice={price}
-                    />
-                  );
-                })}
-            </div>
+            {dataTickets.length !== 0 && (
+              <>
+                <h3>Aktualne bilety:</h3>
+                <div className="form form-horizontal">
+                  {dataTickets.map((item) => {
+                    const {
+                      reservation_id,
+                      repertoire,
+                      day,
+                      tickets,
+                      price,
+                    } = item;
+                    return (
+                      <Ticket
+                        key={reservation_id}
+                        repertoire={repertoire}
+                        day={day}
+                        tickets={tickets}
+                        totalPrice={price}
+                      />
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </>
         ) : (
           <Redirect to="/logout" />
