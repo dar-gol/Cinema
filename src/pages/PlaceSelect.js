@@ -12,15 +12,17 @@ const PlaceSelect = () => {
   const [selectedPlaces, setSelectedPlaces] = useState([]);
   const [bought, setBought] = useState('no');
   const [busyPlace, setBusyPlace] = useState([]);
-  const [cost, setCost] = useState({ name: 'normal', value: 0 });
+  const [cost, setCost] = useState({ ticketId: 1, name: 'normal', value: 0 });
 
   const params = useParams();
 
   // console.log(params);
   // console.log(places);
+  console.log(`Data: ${params.selectedDate}`);
 
   const handlePlace = (i, e) => {
     console.log(cost);
+    console.log(selectedPlaces);
     if (busyPlace && busyPlace.includes(i)) {
       console.log('Zawiera sie w busyPlace');
     } else if (e.target.classList.contains('selected')) {
@@ -30,7 +32,7 @@ const PlaceSelect = () => {
       e.target.classList.add('selected');
       setSelectedPlaces((prev) => [
         ...prev,
-        { number: i, cost: Number(cost.value) },
+        { number: i, cost: Number(cost.value), ticketId: cost.ticketId },
       ]);
     }
     if (selectedPlaces.length === 0) {
@@ -83,7 +85,11 @@ const PlaceSelect = () => {
       );
       const data = await response.json();
       console.log(data);
-      setCost((prev) => ({ name: prev.name, value: data[0].price }));
+      setCost((prev) => ({
+        name: prev.name,
+        value: data[0].price,
+        ticketId: data[0].ticket_id,
+      }));
       setTickets(data);
     } catch (e) {
       console.error(e);
@@ -105,6 +111,7 @@ const PlaceSelect = () => {
   };
 
   const handleReservations = () => {
+    console.log(`Data ${params.selectedDate}`);
     if (selectedPlaces.length !== 0) {
       console.log('Kupuję i płacę :)');
       console.log(tickets);
@@ -130,13 +137,14 @@ const PlaceSelect = () => {
             day: params.selectedDate,
           },
           tickets: selectedPlaces.map((item) => ({
-            ticket_id: 1,
+            ticket_id: item.ticketId,
             seat: item.number,
           })),
         }),
       })
         .then((res) => res.json())
         .then((res) => {
+          console.log('Wynik:');
           console.log(res);
           setBought('yes');
         })
@@ -149,9 +157,9 @@ const PlaceSelect = () => {
     }
   };
 
-  const changeRadioTickets = (e) => {
+  const changeRadioTickets = (e, ticketId) => {
     const { id, value } = e.target;
-    setCost({ name: id, value });
+    setCost({ ticketId, name: id, value });
   };
 
   useEffect(() => {
@@ -182,7 +190,7 @@ const PlaceSelect = () => {
                     type="radio"
                     value={item.price}
                     name="kindOfTicket"
-                    onChange={changeRadioTickets}
+                    onChange={(e) => changeRadioTickets(e, item.ticket_id)}
                     checked={cost.name === item.name}
                   />{' '}
                   {item.name}({item.price} zł)
@@ -201,7 +209,6 @@ const PlaceSelect = () => {
               <p>
                 Łączny koszt:{' '}
                 {selectedPlaces.reduce((prevValue, currentValue) => {
-                  console.log(prevValue, currentValue);
                   return prevValue + currentValue.cost;
                 }, 0)}{' '}
                 zł
